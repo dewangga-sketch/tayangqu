@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <title>❤ Selamat Ulang Tahun TayangQu ❤</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@400;600&display=swap');
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{
+      height:100vh;
+      background:linear-gradient(135deg,#ffdde1,#ee9ca7);
+      font-family:'Poppins',sans-serif;
+      overflow:hidden;
+    }
+    .center{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      height:100%;
+      text-align:center;
+      color:#fff;
+    }
+    #intro{
+      position:fixed;
+      top:0;left:0;right:0;bottom:0;
+      background:#111;
+      color:#fff;
+      font-size:2rem;
+      font-family:'Great Vibes',cursive;
+      z-index:1000;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+    }
+    #main{
+      display:none;
+      flex-direction:column;
+      height:100%;
+    }
+    header{
+      flex:0 0 80px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-family:'Great Vibes',cursive;
+      font-size:2rem;
+      color:#fff;
+      background:rgba(0,0,0,0.3);
+      text-shadow:2px 2px 6px rgba(0,0,0,0.6);
+    }
+    .container{
+      flex:1;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+      padding:20px;
+    }
+    .text-box{
+      font-size:1.2rem;
+      max-width:700px;
+      color:#fff;
+      line-height:1.8;
+      text-align:center;
+      white-space:pre-line;
+      font-family:'Poppins',sans-serif;
+      min-height:200px;
+	  text-shadow:2px 2px 6px rgba(0,0,0,0.6);
+    }
+    .nav{
+      position:absolute;
+      top:50%;
+      transform:translateY(-50%);
+      font-size:2rem;
+      color:#fff;
+      background:transparent;
+      width:40px;
+      height:40px;
+      border-radius:50%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      user-select:none;
+    }
+    .nav:hover{background:rgba(0,0,0,0.5);}
+    .nav.left{left:10px;}
+    .nav.right{right:10px;}
+    button{
+      margin-top:20px;
+      padding:10px 20px;
+      border:none;
+      border-radius:30px;
+      background:#ff4e50;
+      color:#fff;
+      font-size:1.2rem;
+      cursor:pointer;
+      box-shadow:0 4px 8px rgba(0,0,0,0.3);
+    }
+    #photoSlide{
+      display:none;
+      flex:1;
+      align-items:center;
+      justify-content:center;
+      position:relative;
+    }
+    #photoSlide img{
+      max-height:80%;
+      max-width:90%;
+      border-radius:20px;
+      box-shadow:0 6px 15px rgba(0,0,0,0.5);
+    }
+
+    /* falling hearts & flowers */
+    .falling{
+      position:fixed;
+      top:-50px;
+      font-size:20px;
+      animation:fall linear forwards;
+      z-index:0;
+    }
+    @keyframes fall{
+      to{transform:translateY(110vh) rotate(360deg);opacity:0;}
+    }
+
+    /* Split animation panels */
+    #splitAnim{
+      position:fixed;
+      top:0;left:0;width:100%;height:100%;
+      z-index:900;
+      display:none;
+    }
+    #splitAnim .panel{
+      position:absolute;
+      top:0;width:50%;height:100%;
+      background:#111;
+    }
+    #splitAnim .left{left:0;}
+    #splitAnim .right{right:0;}
+    .split-move-left{animation:moveLeft 1.2s forwards;}
+    .split-move-right{animation:moveRight 1.2s forwards;}
+    @keyframes moveLeft{to{transform:translateX(-100%);}}
+    @keyframes moveRight{to{transform:translateX(100%);}}
+  </style>
+</head>
+<body>
+
+<!-- Intro Page -->
+<div id="intro">
+  Hai kamu.. iya kamu, istriku 💕
+  <br><small>(tap untuk lanjut)</small>
+</div>
+
+<!-- Split Animation Layer -->
+<div id="splitAnim">
+  <div class="panel left"></div>
+  <div class="panel right"></div>
+</div>
+
+<!-- Main Page -->
+<div id="main">
+  <header>❤ Selamat Ulang Tahun, TayangQu ❤</header>
+  <div class="container">
+    <div class="nav left" onclick="prevSlide()">&#10094;</div>
+    <div class="text-box" id="textBox"></div>
+    <div class="nav right" onclick="nextSlide()">&#10095;</div>
+  </div>
+  <div id="photoSlide" class="center">
+    <img id="photo" src="" alt="Foto kenangan">
+  </div>
+</div>
+
+<audio id="bgMusic" loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const slides = [
+`Hari ini istimewa, karena wanita paling berharga dalam hidupku lahir ke dunia… ya.. itu kamu.. TayangQu ❤`,
+
+`Hari ini bukan hanya hari istimewa untukmu,
+tapi juga untukku, untuk Tatah, dan untuk Titah,
+karena kami semua bersyukur punya seorang istri
+dan ibu sebaik dirimu.`,
+
+`Terima kasih sudah menjadi istri yang sabar,
+teman hidup yang kuat,
+dan mamah luar biasa bagi anak-anak kita.`,
+
+`Aku tahu tidak selalu mudah,
+ada hari-hari yang melelahkan,
+ada saat-saat penuh tangis dan tawa,
+tapi kau selalu berdiri teguh dengan senyummu.`,
+
+`Tatah dan Titah beruntung sekali
+lahir dari rahimmu, dibesarkan oleh kasihmu,
+dan aku pun beruntung sekali
+diperbolehkan Tuhan untuk mendampingimu.`,
+
+`Tatah dan Titah tumbuh dengan penuh cinta
+karena ada mamah hebat seperti kamu.
+Mereka mungkin belum bisa mengucapkan semuanya,
+tapi aku yakin, dalam hatinya,
+mereka berterima kasih punya mamah sekuat dirimu.`,
+
+`Aku ingin kau tahu…
+betapa aku mencintaimu,
+betapa aku menghargai setiap pengorbananmu,
+betapa aku bangga memanggilmu istriku.`,
+
+`Semoga usiamu selalu penuh berkah,
+semoga hatimu selalu dipenuhi cinta,
+dan semoga setiap mimpimu satu per satu terwujud.`,
+
+`Doaku, semoga Allah selalu menjaga langkahmu,
+memberikan kesehatan,
+melimpahkan rezeki,
+dan memenuhi hatimu dengan kebahagiaan.`,
+
+`Hari ini, aku tak hanya merayakan ulang tahunmu,
+tapi juga merayakan cinta kita,
+keluarga kecil kita,
+dan semua indahnya perjalanan yang sudah kita lalui bersama.`,
+
+`Selamat ulang tahun, Tayangku.
+Aku, Tatah, dan Titah mencintaimu sepenuh hati.
+Hari ini, esok, dan selamanya…
+kamu adalah rumah bagi kami. ❤`,
+
+`Aku mencintaimu, Tayang,
+hari ini, esok, dan selamanya.`,
+
+`[BTN]`
+];
+
+const photos = [
+  "https://drive.google.com/thumbnail?id=1UgPt8VwBzDfSw1OHtWk10YLvrfqlh-W9&sz=w1000",
+  "https://drive.google.com/thumbnail?id=1QLGFrx9EdNnyqSi7ubpQr8uWuIWdQDV9&sz=w1000",
+  "https://drive.google.com/thumbnail?id=1TgO_pYKGi4gEf7bF30Fxl2irOMzJxg4K&sz=w1000",
+  "https://drive.google.com/thumbnail?id=1SC5WpoJB2YmQB-UwgrFN_bGZl0uEIQmW&sz=w1000",
+  "https://drive.google.com/thumbnail?id=1GG8WDNhafkin-JrtO1BNmK4HB5RknRTq&sz=w1000",
+  "https://drive.google.com/thumbnail?id=12cjkQ8vJNssJW_fei3Nei-qav00Lqpw0&sz=w1000",
+  "https://drive.google.com/thumbnail?id=1vkzc96Jg0XHlwCLdW5aFjVmDWB4yQ0Tn&sz=w1000"
+];
+
+
+let slideIndex = 0;
+const textBox = document.getElementById("textBox");
+const photoSlide = document.getElementById("photoSlide");
+const photo = document.getElementById("photo");
+let photoIndex = 0;
+
+let typingInterval = null; // interval ketikan aktif
+let typingDone = false;    // status animasi ketik selesai atau belum
+
+function typeText(text){
+  if(typingInterval) clearInterval(typingInterval);
+
+  textBox.innerHTML = "";
+  let i = 0;
+  typingDone = false;
+
+  typingInterval = setInterval(()=>{
+    textBox.innerHTML += text[i];
+    i++;
+    if(i === text.length){
+      clearInterval(typingInterval);
+      typingInterval = null;
+      typingDone = true;
+    }
+  },50);
+}
+
+function showSlide(){
+  if(slides[slideIndex] === "[BTN]"){
+    textBox.innerHTML = `<button onclick="peluk()">Peluk AKU 🤗</button>`;
+    typingDone = true;
+    return;
+  }
+  typeText(slides[slideIndex]);
+}
+
+function nextSlide(){
+  if(!typingDone){  
+    // kalau masih ngetik, langsung tampilkan full text
+    clearInterval(typingInterval);
+    typingInterval = null;
+    textBox.innerHTML = slides[slideIndex];
+    typingDone = true;
+  } else if(slideIndex < slides.length - 1){  
+    // kalau sudah selesai, baru pindah slide
+    slideIndex++;
+    showSlide();
+  }
+}
+
+function prevSlide(){
+  if(!typingDone){
+    clearInterval(typingInterval);
+    typingInterval = null;
+    textBox.innerHTML = slides[slideIndex];
+    typingDone = true;
+  } else if(slideIndex > 0){
+    slideIndex--;
+    showSlide();
+  }
+}
+
+
+function peluk(){
+  for(let i=0;i<30;i++){
+    createFalling("🤗");
+  }
+  setTimeout(()=>{
+    document.querySelector(".container").style.display="none";
+    photoSlide.style.display="flex";
+    startPhotoSlide();
+  },3000);
+}
+
+function startPhotoSlide(){
+  setInterval(()=>{
+    photo.src=photos[photoIndex];
+    photoIndex=(photoIndex+1)%photos.length;
+  },3000);
+  photo.src=photos[0];
+}
+
+function createFalling(symbol){
+  let el=document.createElement("div");
+  el.className="falling";
+  el.style.left=Math.random()*100+"vw";
+  el.style.animationDuration=3+Math.random()*5+"s";
+  el.innerText=symbol;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),8000);
+}
+
+// intro click with split animation
+document.getElementById("intro").onclick=function(){
+  document.getElementById("bgMusic").play();
+  document.getElementById("intro").style.display="none";
+  const split=document.getElementById("splitAnim");
+  split.style.display="block";
+  const left=split.querySelector(".left");
+  const right=split.querySelector(".right");
+  left.classList.add("split-move-left");
+  right.classList.add("split-move-right");
+  setTimeout(()=>{
+    split.style.display="none";
+    document.getElementById("main").style.display="flex";
+    showSlide();
+    setInterval(()=>{
+      createFalling(Math.random()>0.5?"💖":"🌸");
+    },800);
+  },1200);
+};
+</script>
+</body>
+</html>
